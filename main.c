@@ -260,10 +260,10 @@ static void tes_c_evt_handler(ble_tes_c_t * p_tes_c, ble_tes_c_evt_t * p_tes_c_e
          
             ble_tes_raw_t raw = p_tes_c_evt->params.value.accelerometer;
             float x = raw.x_acc, y = raw.y_acc ;
-            x =  (x + 1023 ) * 7.5 / 2046 ;
+            x =  (x + 1023 ) * 7 / 2046 ;
             y =  (y + 1023 ) * 7 / 2046 ;
-            x_location = (int) 7 - y;
-            y_location = (int) x; 
+            x_location = (int) (( 7 - y ) + 0.5 );
+            y_location = (int)  ( x + 0.5 ); 
             color_choice = LED_GREEN; 
             if (x_location > 5 || y_location > 5 || x_location <= 1 || y_location <= 1)
                 color_choice = LED_RED;
