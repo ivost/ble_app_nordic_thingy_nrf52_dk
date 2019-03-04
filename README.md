@@ -12,6 +12,6 @@ This project is developed on Nordic Thingy 52 and NRF52 dk. It allows NRF52 dk t
 - Nordic Thingy:52
 - 8x8 Bi-Color LED Matrix
 
-This project is adopted from and makes use of the following libraries. 
+This project is adopted from and makes use of the following libraries/example projects. 
 - The Nordic playground nrf52-ble-app-lbs app, https://github.com/NordicPlayground/nRF52-ble-app-lbs.
 - Adafruit Bicolor LED Square Pixel Matrix with I2C Backpack library, https://www.adafruit.com/product/902.
