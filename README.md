@@ -1,4 +1,4 @@
-# Ble App Nordi _thingy Nrf52_dk
+# Ble App Nordic _thingy Nrf52_dk
 
 This project is developed on Nordic Thingy 52 and NRF52 dk. It allows NRF52 dk to retrive motion data from Nordic Thingy using Bluetooth. The NRF52 dk then displays the recived data using an 8x8 Bi-color LED Matrix. 
 
