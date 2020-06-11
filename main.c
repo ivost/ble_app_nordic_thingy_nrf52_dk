@@ -72,13 +72,14 @@
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 
-#include "nrf_drv_twi.h"
+//#include "nrf_drv_twi.h"
 #include "nrf_delay.h"
 #include "app_uart.h"
 #include "nrf_uart.h"
 #include "app_button.h"
 #include "app_gpiote.h"
-#include "Bi_Color_Driver.h"
+
+//#include "Bi_Color_Driver.h"
 
 
 
@@ -113,9 +114,10 @@ BLE_DB_DISCOVERY_DEF(m_db_disc);                                /**< DB discover
 
 static char const m_target_periph_name[] = "Thingy";     /**< Name of the device we try to connect to. This name is searched in the scan report data*/
 
-uint8_t x_location = 3;                                  /** X-Coordinate Location of the Active LED **/
-uint8_t y_location = 3;                                  /** Y-Coordinate Location of the Active LED **/
-uint8_t color_choice = LED_GREEN;                        /** Color of the LED **/
+//uint8_t x_location = 3;                                  /** X-Coordinate Location of the Active LED **/
+//uint8_t y_location = 3;                                  /** Y-Coordinate Location of the Active LED **/
+//uint8_t color_choice = LED_GREEN;                        /** Color of the LED **/
+
 
 #define UART_HWFC APP_UART_FLOW_CONTROL_ENABLED
 
@@ -181,7 +183,7 @@ static void leds_init(void)
 static void scan_start(void)
 {
     ret_code_t err_code;
-    
+
     (void) sd_ble_gap_scan_stop();
     //err_code = nrf_ble_scan_start(&m_scan);
     err_code = sd_ble_gap_scan_start(&m_scan_params, &m_scan_buffer);
@@ -253,22 +255,22 @@ static void tes_c_evt_handler(ble_tes_c_t * p_tes_c, ble_tes_c_evt_t * p_tes_c_e
             // Thingy Environment service discovered. Enable notification of motion data.
             err_code = ble_tes_c_raw_notif_enable(p_tes_c);
             APP_ERROR_CHECK(err_code);
-            
+
         } break; // BLE_TES_C_EVT_DISCOVERY_COMPLETE
-        // Case for Raw data characteristic 
+        // Case for Raw data characteristic
         case BLE_TES_C_EVT_RAW_NOTIFICATION:{
-         
+
             ble_tes_raw_t raw = p_tes_c_evt->params.value.accelerometer;
             float x = raw.x_acc, y = raw.y_acc ;
             x =  (x + 1023 ) * 7 / 2046 ;
             y =  (y + 1023 ) * 7 / 2046 ;
-            x_location = (int) (( 7 - y ) + 0.5 );
-            y_location = (int)  ( x + 0.5 ); 
-            color_choice = LED_GREEN; 
-            if (x_location > 5 || y_location > 5 || x_location <= 1 || y_location <= 1)
-                color_choice = LED_RED;
+//            x_location = (int) (( 7 - y ) + 0.5 );
+//            y_location = (int)  ( x + 0.5 );
+//            color_choice = LED_GREEN;
+//            if (x_location > 5 || y_location > 5 || x_location <= 1 || y_location <= 1)
+//                color_choice = LED_RED;
             NRF_LOG_INFO("Got RAW: %d,%d,%d,%d ", x ,y,raw.x_acc, raw.y_acc) ;
-        
+
         }break;
 
         default:
@@ -325,7 +327,7 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
             NRF_LOG_INFO("Connected.");
             err_code = ble_lbs_c_handles_assign(&m_ble_lbs_c, p_gap_evt->conn_handle, NULL);
             APP_ERROR_CHECK(err_code);
-            
+
             err_code = ble_tes_c_handles_assign(&m_ble_tes_c, p_gap_evt->conn_handle, NULL);
             APP_ERROR_CHECK(err_code);
 
@@ -396,7 +398,7 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
             err_code = sd_ble_gap_disconnect(p_ble_evt->evt.gatts_evt.conn_handle,
                                              BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
             APP_ERROR_CHECK(err_code);
-        } break;      
+        } break;
 
         default:
             // No implementation needed.
@@ -529,9 +531,9 @@ static void idle_state_handle(void)
 
 int main(void)
 {
-    // Address of the Bi_Color LED matrix for the twi communication. 
-    uint8_t address = 0x70;
-    
+    // Address of the Bi_Color LED matrix for the twi communication.
+    //uint8_t address = 0x70;
+
     // Initialize.
     log_init();
     timer_init();
@@ -546,6 +548,7 @@ int main(void)
     // Start execution.
     NRF_LOG_INFO("Thingy:52 to nRF52 DK project started.");
     NRF_LOG_FLUSH();
+/***
     // initialize.. the Bi_Color LED matrix
     NRF_bicolor matrix;
     NRF_bicolor_TWI_init();
@@ -557,6 +560,7 @@ int main(void)
     NRF_LOG_FLUSH();
     // Turn of blinking
     NRF_bicolor_blinkRate(&matrix, 0);
+***/
     nrf_delay_ms(1000);
     // start scanning for bluetooth devices
     scan_start();
@@ -567,12 +571,14 @@ int main(void)
     for (;;)
     {
         idle_state_handle();
+/***
         // Clear LED matrix
         NRF_bicolor_clear(&matrix);
         // Draw pixel at a specific location in the matrix
         NRF_bicolor_drawPixel( &matrix, x_location % 8 , y_location % 8, color_choice);
         // Write the matrix to the LED board
         NRF_bicolor_writeDisplay(&matrix);
-        nrf_delay_ms(500);     
+***/
+        nrf_delay_ms(500);
     }
 }
