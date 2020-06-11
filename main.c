@@ -103,7 +103,7 @@
 #define APP_BLE_CONN_CFG_TAG            1                                   /**< A tag identifying the SoftDevice BLE configuration. */
 #define APP_BLE_OBSERVER_PRIO           3                                   /**< Application's BLE observer priority. You shouldn't need to modify this value. */
 
-BLE_TBS_C_DEF(m_ble_tbs_c);                                     /**< Main structure used by the TBS client module. */
+//BLE_TBS_C_DEF(m_ble_tbs_c);                                     /**< Main structure used by the TBS client module. */
 BLE_TES_C_DEF(m_ble_tes_c);                                     /**< Main structure used by the TES client module. */
 
 //BLE_TES_C_DEF(m_ble_tes_c);                                     /**< Main structure used by the TES client module. */
@@ -186,7 +186,10 @@ static void scan_start(void)
 
     (void) sd_ble_gap_scan_stop();
     //err_code = nrf_ble_scan_start(&m_scan);
+
+    NRF_LOG_INFO("sd_ble_gap_scan_start");
     err_code = sd_ble_gap_scan_start(&m_scan_params, &m_scan_buffer);
+    NRF_LOG_INFO("sd_ble_gap_scan_end");
     APP_ERROR_CHECK(err_code);
 
     bsp_board_led_off(CENTRAL_CONNECTED_LED);
